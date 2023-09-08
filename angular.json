@@ -28,17 +28,20 @@
               "src/assets"
             ],
             "styles": [
+              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "./node_modules/leader-line/leader-line.min.js"
+            ]
           },
           "configurations": {
             "production": {
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "1.5mb",
+                  "maximumError": "2mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -102,6 +105,40 @@
           }
         }
       }
+    },
+    "sb-taxonomy-editor": {
+      "projectType": "library",
+      "root": "projects/sb-taxonomy-editor",
+      "sourceRoot": "projects/sb-taxonomy-editor/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/sb-taxonomy-editor/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/sb-taxonomy-editor/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/sb-taxonomy-editor/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/sb-taxonomy-editor/src/test.ts",
+            "tsConfig": "projects/sb-taxonomy-editor/tsconfig.spec.json",
+            "karmaConfig": "projects/sb-taxonomy-editor/karma.conf.js"
+          }
+        }
+      }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }

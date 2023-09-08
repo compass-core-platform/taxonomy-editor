@@ -1,0 +1,24 @@
+<div class="dialog">
+    <div class="dialog-title" mat-dialog-title>{{app_strings.createNew}} {{data.columnInfo.name}}</div>
+    <form [formGroup]="createTermForm" novalidate (ngSubmit)="disableCreate?updateTerm():saveTerm()">
+        <mat-form-field>
+            <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
+            <input matInput formControlName="name" placeholder="{{app_strings.name}}">
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelect($event.option)">
+                <mat-option *ngFor="let option of filtedTermLists | async"  [value]="option">
+                  {{option.name}}
+                </mat-option>
+              </mat-autocomplete>
+        </mat-form-field>
+        <mat-error *ngIf="isTermExist">{{app_strings.alreadyExist}}</mat-error>
+        <mat-form-field>
+            <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
+            <textarea matInput formControlName="description" placeholder="{{app_strings.description}}"></textarea>
+        </mat-form-field>
+         <footer class="actions">
+            <button mat-raised-button color="default" type="reset" (click)="dialogClose('')">{{app_strings.cancel}}</button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="!disableCreate">{{app_strings.create}}</button>
+            <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="disableCreate">{{app_strings.update}}</button>
+        </footer>
+    </form>
+</div>
