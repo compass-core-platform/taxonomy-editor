@@ -3,7 +3,7 @@
     <form [formGroup]="createTermForm" novalidate (ngSubmit)="disableCreate?updateTerm():saveTerm()">
         <mat-form-field>
             <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
-            <input matInput formControlName="name" placeholder="{{app_strings.name}}">
+            <input matInput formControlName="name" placeholder="{{app_strings.name}}"   [matAutocomplete]="auto">
             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelect($event.option)">
                 <mat-option *ngFor="let option of filtedTermLists | async"  [value]="option">
                   {{option.name}}
