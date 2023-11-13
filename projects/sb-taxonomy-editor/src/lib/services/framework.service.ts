@@ -264,4 +264,32 @@ export class FrameworkService {
     return categoryConfig;
   }
 
+  isTermExistRemove(id) {
+    let associations = [];
+    let temp;
+     this.selectionList.forEach((parent,i) => {
+      temp = parent.children ? parent.children.filter(child => child.identifier === id) : null
+      associations = parent.children ? parent.children.map(c => {
+        return { identifier: c.identifier} // approvalStatus: c.associationProperties?c.associationProperties.approvalStatus: 'Draft'
+      }) : [] 
+
+      if(temp && temp.length) {
+        associations = associations.filter((obj) =>  obj.identifier !== id);
+        const requestBody = {
+          request: {
+              term: {
+                associations: [
+                  ...associations  
+                ]    
+              }
+            } 
+          }
+        this.updateTerm(this.frameworkId, parent.category, parent.code,requestBody).subscribe( res => {
+            // console.log(res);
+            this.publishFramework().subscribe(res => console.log(res));
+        });
+      }
+    })
+  }
+
 }

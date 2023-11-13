@@ -19,9 +19,18 @@
                 <!-- <span>++{{data.children.selected}}+++</span>
                 <span>=={{data.children.status}}==</span>  -->
                 <div class="card-description">{{data.children.description}} </div>
+                
             </div>
         </div>
-
+        <button mat-icon-button  (click)="$event.stopPropagation()" [matMenuTriggerFor]="menu" aria-label="Remove terms Association">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu" class="term-dropdown">
+            <button mat-menu-item (click)="remove(data.children.identifier)">
+              <mat-icon>delete</mat-icon>
+              <span>Remove</span>
+            </button>
+        </mat-menu>
         <!-- <p>{{data.children.approvalStatus}}, {{data.children.associationProperties?.approvalStatus}}</p> -->
         <!-- *ngIf="!data.isViewOnly && data.children.approvalStatus === 'Draft' && isApprovalRequired" -->
         <div class="term-card-checkbox">

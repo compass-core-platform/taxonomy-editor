@@ -19,6 +19,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { DashboardComponent } from './containers/dashboard/dashboard.component';
 import { FrameworkService } from './services/framework.service';
@@ -46,6 +47,7 @@ import { ApproveViewComponent } from './components/approve-view/approve-view.com
 import { OrderByPipe } from './pipes/order-by.pipe';
 import { DatePipe } from './pipes/date.pipe'
 import { LandingPageComponent } from './containers/landing-page/landing-page.component'
+import { ConfirmDialogBoxComponent } from './components/confirm-dialog-box/confirm-dialog-box.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +69,8 @@ import { LandingPageComponent } from './containers/landing-page/landing-page.com
     PendingApprovalComponent,
     ApproveViewComponent,
     OrderByPipe,
-    DatePipe
+    DatePipe,
+    ConfirmDialogBoxComponent
   ],
   imports: [
     CommonModule,
@@ -89,7 +92,8 @@ import { LandingPageComponent } from './containers/landing-page/landing-page.com
     MatTooltipModule,
     MatCheckboxModule,
     MatTableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatMenuModule
   ],
   providers:[
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },

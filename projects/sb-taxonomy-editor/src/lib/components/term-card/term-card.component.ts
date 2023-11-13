@@ -5,7 +5,8 @@ import { FrameworkService } from '../../services/framework.service'
 import { LocalConnectionService } from '../../services/local-connection.service';
 import { labels } from '../../labels/strings';
 import { CardSelection, CardChecked, Card } from '../../models/variable-type.model';
-
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogBoxComponent } from '../confirm-dialog-box/confirm-dialog-box.component'
 @Component({
   selector: 'lib-term-card',
   templateUrl: './term-card.component.html',
@@ -32,7 +33,10 @@ export class TermCardComponent implements OnInit {
   @Output() isSelected = new EventEmitter<CardSelection>()
   @Output() selectedCard = new EventEmitter<CardChecked>()
 
-  constructor(private frameworkService: FrameworkService, private localConnectionService: LocalConnectionService, private approvalService: ApprovalService) { }
+  constructor(private frameworkService: FrameworkService, 
+    private localConnectionService: LocalConnectionService, 
+    private approvalService: ApprovalService,
+    public dialog: MatDialog) { }
 
   ngOnInit() {
     this.isApprovalRequired = this.localConnectionService.getConfigInfo().isApprovalRequired
@@ -77,5 +81,13 @@ export class TermCardComponent implements OnInit {
       }
       return borderColor;
     }
+  }
+  remove(id){
+        this.dialog.open(ConfirmDialogBoxComponent, {
+          data:id,
+          width: '400px',
+          panelClass: 'custom-dialog-container'
+        });
+      // this.frameworkService.isTermExistRemove(id);
   }
 }

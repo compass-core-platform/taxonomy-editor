@@ -146,7 +146,7 @@ export class CreateTermComponent implements OnInit {
 
   dialogClose(term) {
       this.frameWorkService.publishFramework().subscribe(res => {
-        this.dialogRef.close(term)
+        this.dialogRef.close(term);
       });
   }
 
