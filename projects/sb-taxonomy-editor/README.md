@@ -1,26 +1,31 @@
-# SbTaxonomyEditor
+## Install taxonomy-editor
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.0.
+npm install sb-taxonomy-editor@latest
 
-## Code scaffolding
+## Store Environment and Framework configuration in localstorage.
 
-Run `ng generate component component-name --project sb-taxonomy-editor` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project sb-taxonomy-editor`.
-> Note: Don't forget to add `--project sb-taxonomy-editor` or else it will be added to the default project in your `angular.json` file. 
+    environment = {
+            frameworkName: string,
+            channelId: string,
+            authToken: string,
+            isApprovalRequired: false
+    };
 
-## Build
+## Color configuration
 
-Run `ng build sb-taxonomy-editor` to build the project. The build artifacts will be stored in the `dist/` directory.
+    taxonomyConfig = {
+        frameworkId: string,
+        config: [
+            {
+                index:number,
+                category:string,
+                icon: 'string',
+                color: 'string'
+            }
+        ]
+    } 
 
-## Publishing
+## Adding lib tag into template
 
-After building your library with `ng build sb-taxonomy-editor`, go to the dist folder `cd dist/sb-taxonomy-editor` and run `npm publish`.
+<sb-taxonomy-editor></sb-taxonomy-editor>
 
-## Running unit tests
-
-Run `ng test sb-taxonomy-editor` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
-
-## Todo::  Documentation
