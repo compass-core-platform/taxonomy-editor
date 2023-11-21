@@ -14,15 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    SbTaxonomyEditorModule.forChild({
-      source: 'online', data:
-        { 
-          endpoint: environment.url,
-          token: environment.token, 
-          frameworkName: 'tarento_fw',
-          isApprovalRequired:environment.isApprovalRequired
-        }
-    }),
+    SbTaxonomyEditorModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

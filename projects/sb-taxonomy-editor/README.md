@@ -1,3 +1,4 @@
+
 ## Install taxonomy-editor
 
 npm install sb-taxonomy-editor@latest
@@ -11,7 +12,7 @@ npm install sb-taxonomy-editor@latest
             isApprovalRequired: false
     };
 
-## Color configuration
+## Column Color configuration
 
     taxonomyConfig = {
         frameworkId: string,
@@ -26,6 +27,4 @@ npm install sb-taxonomy-editor@latest
     } 
 
 ## Adding lib tag into template
-
-<sb-taxonomy-editor></sb-taxonomy-editor>
-
+ <lib-taxonomy-view [environment]="environment" [taxonomyConfig]="taxonomyConfig"></lib-taxonomy-view>

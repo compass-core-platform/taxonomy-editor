@@ -9,8 +9,5 @@ import { taxonomyConfig } from '../assets/config';
 export class AppComponent {
   environment = environment;
   taxonomyConfig = taxonomyConfig;
-  constructor(){
-    localStorage.setItem('environment', JSON.stringify(environment));
-    localStorage.setItem('taxonomyConfig', JSON.stringify(taxonomyConfig))
-  }
+  constructor() { }
 }

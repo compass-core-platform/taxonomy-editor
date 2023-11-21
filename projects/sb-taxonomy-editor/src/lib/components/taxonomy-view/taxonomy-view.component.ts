@@ -24,6 +24,9 @@ export class TaxonomyViewComponent implements OnInit, OnDestroy {
   @Input() approvalList: Array<Card> = [];
   @Input() isApprovalView: boolean = false;
   @Input() workFlowStatus: string;
+  @Input() environment:any;
+  @Input() taxonomyConfig: any;
+
   @Output() sentForApprove = new EventEmitter<any>()
   mapping = {};
   heightLighted = []
@@ -47,22 +50,15 @@ export class TaxonomyViewComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.init()
-    // this.frameworkService.isDataUpdated.subscribe(() => {
-    //   this.updateLocalData()
-    // })
-    // debugger
     this.showActionBar = this.isApprovalView?true:false;
-    
   }
-  ngOnChanges(){
+
+  ngOnChanges() {
     this.draftTerms = this.approvalList;
   }
+
   init() {
-  
-    // this.frameworkService.getFrameworkInfo().subscribe(res => {
-    //   this.frameworkData = res.result.framework.categories
-    //   this.frameworkCode = res.result.framework.code
-    // })
+    this.initConfig();
     this.frameworkService.getFrameworkInfo().subscribe(res => {
       this.connectorSvc.removeAllLines()
       this.updateLocalData()
@@ -74,16 +70,8 @@ export class TaxonomyViewComponent implements OnInit, OnDestroy {
              this.drawHeaderLine(res.result.framework.categories.length);  
         },500)
     })
-    // this.newTermSubscription = this.frameworkService.termSubject.subscribe((term: any) => {
-    //   // if (term)
-    //   this.updateTerms()
-    // })
+  
   }
-  // ngAfterContentChecked(){
-  //   setTimeout(() => {
-  //     this.drawHeaderLine(4);  
-  //   },3000)
-  // }
 
   updateTaxonomyTerm(data: { selectedTerm: any, isSelected: boolean }) {
     
@@ -346,7 +334,17 @@ export class TaxonomyViewComponent implements OnInit, OnDestroy {
   closeActionBar(e){ 
     this.showActionBar = false;
   }
+
+  initConfig() {
+    if(this.environment){
+      this.frameworkService.updateEnvironment(this.environment);
+      this.frameworkService.setConfig(this.taxonomyConfig);
+    }
+  }
+
   ngOnDestroy(){
       this.frameworkService.removeOldLine();
   }
+
+  
 }

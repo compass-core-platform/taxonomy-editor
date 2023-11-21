@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActionBarComponent } from './action-bar.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('ActionBarComponent', () => {
   let component: ActionBarComponent;
@@ -8,7 +9,8 @@ describe('ActionBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ActionBarComponent ]
+      declarations: [ ActionBarComponent ],
+      imports: [HttpClientModule]
     })
     .compileComponents();
   }));

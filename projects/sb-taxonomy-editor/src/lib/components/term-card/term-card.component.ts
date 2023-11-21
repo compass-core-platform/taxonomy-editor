@@ -82,6 +82,7 @@ export class TermCardComponent implements OnInit {
       return borderColor;
     }
   }
+  
   remove(id){
         this.dialog.open(ConfirmDialogBoxComponent, {
           data:id,

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FrameworkService } from './services/framework.service';
 
 @Component({
@@ -10,15 +10,14 @@ import { FrameworkService } from './services/framework.service';
   ]
 })
 export class SbTaxonomyEditorComponent implements OnInit {
-
+  
   @Input() environment:any;
   @Input() taxonomyConfig: any;
-  constructor(private frameworkService: FrameworkService) { 
-  }
+
+  constructor(private frameworkService: FrameworkService) { }
 
   ngOnInit() {
     this.frameworkService.updateEnvironment(this.environment);
     this.frameworkService.setConfig(this.taxonomyConfig);
   }
-
 }

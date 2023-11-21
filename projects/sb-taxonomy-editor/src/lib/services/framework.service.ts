@@ -37,7 +37,7 @@ export class FrameworkService {
   getFrameworkInfo(): Observable<any> {
     localStorage.removeItem('terms')
     if (this.localConfig.connectionType === 'online') {
-      return this.http.get(`/api/framework/v1/read/${this.localConfig.frameworkName}`).pipe(
+      return this.http.get(`/api/framework/v1/read/${this.environment.frameworkName}`).pipe(
         tap((response: any) => {
           this.resetAll()
           this.formateData(response)
@@ -80,7 +80,6 @@ export class FrameworkService {
   }
 
   getEnviroment() {
-    this.environment = JSON.parse(localStorage.getItem('environment'));
     return this.environment
   }
 
@@ -254,7 +253,7 @@ export class FrameworkService {
   }
 
   getConfig(code: string) {
-    this.rootConfig = JSON.parse(localStorage.getItem('taxonomyConfig'))
+    // this.rootConfig = JSON.parse(localStorage.getItem('taxonomyConfig'))
     let categoryConfig: any;
     this.rootConfig.forEach((config: any, index: number) => {
       if(this.frameworkId == config.frameworkId) {
@@ -285,8 +284,7 @@ export class FrameworkService {
             } 
           }
         this.updateTerm(this.frameworkId, parent.category, parent.code,requestBody).subscribe( res => {
-            // console.log(res);
-            this.publishFramework().subscribe(res => console.log(res));
+              this.publishFramework().subscribe(res => console.log(res));
         });
       }
     })

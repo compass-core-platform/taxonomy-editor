@@ -10,10 +10,10 @@ const routes: Routes = [
     {
         path: '',
         pathMatch: 'full',
-        redirectTo:''
+        redirectTo:'/taxonomy-view'
     },
     {
-         path:'dashboard',
+         path:'taxonomy-view',
         component:TaxonomyViewComponent
     },
     {

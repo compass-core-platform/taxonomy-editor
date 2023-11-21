@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SbTaxonomyEditorComponent } from './sb-taxonomy-editor.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('SbTaxonomyEditorComponent', () => {
   let component: SbTaxonomyEditorComponent;
@@ -8,7 +9,8 @@ describe('SbTaxonomyEditorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ SbTaxonomyEditorComponent ]
+      declarations: [ SbTaxonomyEditorComponent ],
+      imports: [HttpClientModule]
     })
     .compileComponents();
 
