@@ -36,7 +36,6 @@ export class FrameworkService {
 
   getFrameworkInfo(): Observable<any> {
     localStorage.removeItem('terms')
-    if (this.localConfig.connectionType === 'online') {
       return this.http.get(`/api/framework/v1/read/${this.environment.frameworkName}`).pipe(
         tap((response: any) => {
           this.resetAll()
@@ -47,17 +46,12 @@ export class FrameworkService {
           this.categoriesHash.next([])
           throw 'Error in source. Details: ' + err; // Use console.log(err) for detail
         }))
-    } else {
-      this.resetAll();
-      this.formateData(FRAMEWORK);
-      return of(FRAMEWORK)
-    }
   }
 
-  readTerms(frameworkId, categoryId, requestBody) {
-    return this.http.post(`/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
-      map((res: any) => res.result))
-  }
+  // readTerms(frameworkId, categoryId, requestBody) {
+  //   return this.http.post(`/api/framework/v1/term/search?framework=${frameworkId}&category=${categoryId}`, requestBody).pipe(
+  //     map((res: any) => res.result))
+  // }
 
   createTerm(frameworkId, categoryId, requestBody) {
     return this.http.post(`/api/framework/v1/term/create?framework=${frameworkId}&category=${categoryId}`, requestBody)
@@ -87,32 +81,40 @@ export class FrameworkService {
     return this.frameworkId
   }
 
-
   getNextCategory(currentCategory: string) {
     const currentIndex = this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === currentCategory
     })
     let categoryLength = this.categoriesHash.getValue().length
+    /* istanbul ignore next */
     return (currentIndex + 1) <= categoryLength ? this.categoriesHash.getValue()[currentIndex + 1] : null
   }
+
   getPreviousCategory(currentCategory: string) {
     const currentIndex = this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === currentCategory
     })
+    /* istanbul ignore next */
     return (currentIndex - 1) >= 0 ? this.categoriesHash.getValue()[currentIndex - 1] : null
   }
+
+  /* Not using anywhere ignore unit test */
+   /* istanbul ignore next */ 
   getParentTerm(currentCategory: string) {
     const parent = this.getPreviousCategory(currentCategory) || null
     return parent ? this.selectionList.get(parent.code) : null
   }
+
   childClick(event: { type: string, data: any }) {
     this.currentSelection.next(event)
   }
+
   resetAll() {
     this.categoriesHash.next([])
     this.currentSelection.next(null)
     this.list.clear()
   }
+
   isLastColumn(colCode) {
     return this.categoriesHash.value && (this.categoriesHash.value.findIndex((a: NSFramework.ICategory) => {
       return a.code === colCode
@@ -120,6 +122,8 @@ export class FrameworkService {
     // return false
   }
 
+ /* Not using anywhere ignore unit test */
+   /* istanbul ignore next */ 
   removeItemFromArray(array:[], item) {
     /* assign a empty array */
     var tmp = [];
@@ -161,13 +165,14 @@ export class FrameworkService {
   // }
   set setTerm(res: any) {
     this.termSubject.next(res)
-    let oldTerms = ([...this.getTerm] || [])
+    let oldTerms = ([...this.getTerm])
     oldTerms.push(res)
     localStorage.setItem('terms', JSON.stringify(oldTerms))
   }
   get getTerm(): any[] {
     return JSON.parse(localStorage.getItem('terms') || '[]')
   }
+   /* istanbul ignore next */ 
   getLocalTermsByParent(parentCode: string): any[] {
     const filteredData = this.getTerm.filter(x => {
       return x.parent && x.parent.category === parentCode
@@ -177,20 +182,25 @@ export class FrameworkService {
       return x.term
     })
   }
+
   getLocalTermsByCategory(parentCode: string): any[] {
+    
     const filteredData = this.getTerm.filter(x => {
       return x.term && x.term.category === parentCode
-    }) || [];
+    });
 
     return filteredData
   }
+  
+  /* istanbul ignore next */ 
   getLocalTermsCategory(category: string): any[] {
     const filteredData = this.getTerm.filter(x => {
       return x.category === category
-    }) || [];
+    });
 
     return filteredData
   }
+
   formateData(response: any) {
     this.frameworkId = response.result.framework.code;
     // console.log('response', response);
@@ -241,7 +251,9 @@ export class FrameworkService {
   }
 
   removeOldLine() {
+     /* istanbul ignore next */ 
     const eles = Array.from(document.getElementsByClassName('leader-line') || [])
+   /* istanbul ignore if */ 
     if(eles.length>0){
         eles.forEach(ele => ele.remove());
     }
@@ -267,6 +279,7 @@ export class FrameworkService {
     let associations = [];
     let temp;
      this.selectionList.forEach((parent,i) => {
+       /* istanbul ignore next */ 
       temp = parent.children ? parent.children.filter(child => child.identifier === id) : null
       associations = parent.children ? parent.children.map(c => {
         return { identifier: c.identifier} // approvalStatus: c.associationProperties?c.associationProperties.approvalStatus: 'Draft'

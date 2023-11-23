@@ -3,6 +3,9 @@ import { of } from "rxjs/internal/observable/of";
 export class MockFrameworkService {
     list = list;
     selectionList = list;
+    localConfig = {
+        connectionType:' online'
+    }
     rootConfig =  [
       {   
           "index": 1,
@@ -37,6 +40,14 @@ export class MockFrameworkService {
 
   getEnviroment() {
     return this.environment;
+  }
+
+  updateEnvironment(env:any) {
+    this.environment = env;
+  }
+
+  setConfig(config) {
+    this.rootConfig = config;
   }
 
   getConfig(){
