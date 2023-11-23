@@ -12,6 +12,7 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
 import { of } from 'rxjs';
 import { FrameworkService } from '../../services/framework.service';
+import * as appConstants from '../../constants/app-constant';
 
 describe('CreateTermComponent', () => {
   let component: CreateTermComponent;
@@ -21,7 +22,7 @@ describe('CreateTermComponent', () => {
 
   beforeEach(async(() => {
     mockDialogRef = jasmine.createSpyObj('MatDialogRef', ['close']);
-    mockFrameworkService = jasmine.createSpyObj('FrameworkService', ['updateTerm', 'publishFramework']);
+    mockFrameworkService = jasmine.createSpyObj('FrameworkService', ['updateTerm', 'publishFramework', 'getUuid', 'createTerm']);
     TestBed.configureTestingModule({
       declarations: [ CreateTermComponent ],
       imports: [
@@ -57,9 +58,7 @@ describe('CreateTermComponent', () => {
         category: 'mockCategory',
         code: 'mockCode',
         identifier: 'mockIdentifier',
-        children: [
-          // ... mock children data if needed
-        ]
+        children: []
       }
     };
 
@@ -81,27 +80,25 @@ describe('CreateTermComponent', () => {
 
   it('should call saveTerm method on form submission for create', () => {
     spyOn(component, 'saveTerm');
-    // Set form values as needed
     component.createTermForm.setValue({ name: 'Test Term', description: 'Description' });
     component.disableCreate = false;
-    fixture.detectChanges(); // Trigger change detection
+    fixture.detectChanges();
     fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
     expect(component.saveTerm).toHaveBeenCalled();
   });
 
   it('should call updateTerm method on form submission for update', () => {
     spyOn(component, 'updateTerm');
-    // Set form values as needed
     component.createTermForm.setValue({ name: 'Updated Term', description: 'Updated Description' });
     component.disableCreate = true;
-    fixture.detectChanges(); // Trigger change detection
+    fixture.detectChanges();
     fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
     expect(component.updateTerm).toHaveBeenCalled();
   });
 
   it('should render "Update" button when in update mode', async () => {
     component.disableCreate = true;
-    fixture.detectChanges(); // Trigger change detection
+    fixture.detectChanges();
     const loader = TestbedHarnessEnvironment.loader(fixture);
     const updateButton = await loader.getHarness(MatButtonHarness.with({ text: 'Update' }));
     expect(updateButton).toBeTruthy();
@@ -134,34 +131,24 @@ describe('CreateTermComponent', () => {
     expect(component.isTermExist).toBeTruthy();
   });
 
+ 
+
   // it('should call createTerm method if the name does not exist and form is valid', () => {
-  //   // Arrange
   //   const mockNewName = 'NewTerm';
   //   component.termLists = [];
   //   component.createTermForm.get('name').setValue(mockNewName);
   //   spyOn(component.frameWorkService, 'createTerm').and.returnValue(of({ result: { node_id: ['someId'] } }));
-  
-  //   // Act
   //   component.saveTerm();
-  
-  //   // Assert
   //   expect(component.isTermExist).toBeFalsy();
   //   expect(component.frameWorkService.createTerm).toHaveBeenCalled();
-  //   // Add more assertions if needed based on your specific logic
   // });
 
   it('should not set isTermExist if the name does not exist', () => {
-    // Arrange
     const mockInvalidName = '';
     component.termLists = [];
     component.createTermForm.get('name').setValue(mockInvalidName);
-  
-    // Act
     component.saveTerm();
-  
-    // Assert
     expect(component.isTermExist).toBeFalsy();
-    // Add more assertions if needed based on your specific logic
   });
 
   it('_filter should filter termLists based on search text', () => {
@@ -202,8 +189,8 @@ describe('CreateTermComponent', () => {
 
   // it('should handle createTerm success', fakeAsync(() => {
   //   const createTermResponse = { result: { node_id: ['someId'] } };
-  //   spyOn(component['frameWorkService'], 'createTerm').and.returnValue(of(createTermResponse));
-  //   spyOn(component['frameWorkService'], 'getUuid').and.returnValue('some-uuid');
+  //   mockFrameworkService.createTerm.and.returnValue(of(createTermResponse));
+  //   mockFrameworkService.getUuid.and.returnValue(of('some-uuid'));
   //   component.createTermForm.setValue({ name: 'Test Term', description: 'Description' });
   //   component.disableCreate = false;
   //   component.saveTerm();
@@ -213,6 +200,13 @@ describe('CreateTermComponent', () => {
   //   expect(component.updateTerm).toHaveBeenCalled();
   // }));
   
+  it('should close the dialog on dialogClose', () => {
+    const mockTerm = { term: 'sampleTerm', created: true };
+    mockFrameworkService.publishFramework.and.returnValue(of({}));
+    component.dialogClose(mockTerm);
+    expect(mockFrameworkService.publishFramework).toHaveBeenCalled();
+    expect(mockDialogRef.close).toHaveBeenCalledWith(mockTerm);
+  });
   
   
   
