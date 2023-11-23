@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 
 import { CreateTermComponent } from './create-term.component';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -10,12 +10,18 @@ import { By } from '@angular/platform-browser';
 import { MatButtonHarness } from '@angular/material/button/testing';
 import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed';
 import { HarnessLoader } from '@angular/cdk/testing';
+import { of } from 'rxjs';
+import { FrameworkService } from '../../services/framework.service';
 
 describe('CreateTermComponent', () => {
   let component: CreateTermComponent;
   let fixture: ComponentFixture<CreateTermComponent>;
+  let mockFrameworkService: jasmine.SpyObj<FrameworkService>;
+  let mockDialogRef: jasmine.SpyObj<MatDialogRef<CreateTermComponent>>;
 
   beforeEach(async(() => {
+    mockDialogRef = jasmine.createSpyObj('MatDialogRef', ['close']);
+    mockFrameworkService = jasmine.createSpyObj('FrameworkService', ['updateTerm', 'publishFramework']);
     TestBed.configureTestingModule({
       declarations: [ CreateTermComponent ],
       imports: [
@@ -28,6 +34,8 @@ describe('CreateTermComponent', () => {
       providers:[
         {provide: MatDialogRef, useValue: {}},
         {provide: MAT_DIALOG_DATA, useValue: []},
+        { provide: FrameworkService, useValue: mockFrameworkService },
+        { provide: MatDialogRef, useValue: mockDialogRef },
       ]
     })
     .compileComponents();
@@ -40,6 +48,18 @@ describe('CreateTermComponent', () => {
     component.data = {
       columnInfo: {
         children: []
+      }
+    };
+
+    component.data = {
+      frameworkId: 'mockFrameworkId',
+      columnInfo: {
+        category: 'mockCategory',
+        code: 'mockCode',
+        identifier: 'mockIdentifier',
+        children: [
+          // ... mock children data if needed
+        ]
       }
     };
 
@@ -95,4 +115,105 @@ describe('CreateTermComponent', () => {
     fixture.detectChanges();
     expect(component.dialogClose).toHaveBeenCalled();
   });
+
+  it('should set selectedTerm, patch values, and disable description', () => {
+    const mockTerm = { value: { name: 'SelectedTerm', description: 'Description' } };
+    component.onSelect(mockTerm);
+    expect(component.selectedTerm).toEqual(mockTerm.value);
+    expect(component.createTermForm.get('name').value).toBe(mockTerm.value.name);
+    expect(component.createTermForm.get('description').value).toBe(mockTerm.value.description);
+    expect(component.createTermForm.get('description').disabled).toBeTruthy();
+    expect(component.disableCreate).toBeTruthy();
+  });
+
+  it('should set isTermExist to true if name already exists', () => {
+    const mockExistingName = 'ExistingTerm';
+    component.termLists = [{ name: mockExistingName }];
+    component.createTermForm.get('name').setValue(mockExistingName);
+    component.saveTerm();
+    expect(component.isTermExist).toBeTruthy();
+  });
+
+  // it('should call createTerm method if the name does not exist and form is valid', () => {
+  //   // Arrange
+  //   const mockNewName = 'NewTerm';
+  //   component.termLists = [];
+  //   component.createTermForm.get('name').setValue(mockNewName);
+  //   spyOn(component.frameWorkService, 'createTerm').and.returnValue(of({ result: { node_id: ['someId'] } }));
+  
+  //   // Act
+  //   component.saveTerm();
+  
+  //   // Assert
+  //   expect(component.isTermExist).toBeFalsy();
+  //   expect(component.frameWorkService.createTerm).toHaveBeenCalled();
+  //   // Add more assertions if needed based on your specific logic
+  // });
+
+  it('should not set isTermExist if the name does not exist', () => {
+    // Arrange
+    const mockInvalidName = '';
+    component.termLists = [];
+    component.createTermForm.get('name').setValue(mockInvalidName);
+  
+    // Act
+    component.saveTerm();
+  
+    // Assert
+    expect(component.isTermExist).toBeFalsy();
+    // Add more assertions if needed based on your specific logic
+  });
+
+  it('_filter should filter termLists based on search text', () => {
+    component.termLists = [
+      { name: 'Term1' },
+      { name: 'Term2' },
+      { name: 'AnotherTerm' },
+    ];
+    const result = (component as any)._filter('Term');
+    expect(result).toEqual([
+      { name: 'Term1' },
+      { name: 'Term2' },
+      { name: 'AnotherTerm' },
+    ]);
+  });
+
+  it('should update selectedTerm and form values when a term is selected', () => {
+    const mockTerm = { value: { name: 'SelectedTerm', description: 'Description' } };
+    component.onSelect(mockTerm);
+    expect(component.selectedTerm).toEqual(mockTerm.value);
+    expect(component.createTermForm.get('name').value).toBe(mockTerm.value.name);
+    expect(component.createTermForm.get('description').value).toBe(mockTerm.value.description);
+    expect(component.createTermForm.get('description').disabled).toBeTruthy();
+    expect(component.disableCreate).toBeTruthy();
+  });
+
+  it('should update selectedTerm and form values when a different term is selected', () => {
+    const existingSelectedTerm = { name: 'PreviousTerm', description: 'PreviousDescription' };
+    component.selectedTerm = existingSelectedTerm;
+    const newTerm = { value: { name: 'NewTerm', description: 'NewDescription' } };
+    component.onSelect(newTerm);
+    expect(component.selectedTerm).toEqual(newTerm.value);
+    expect(component.createTermForm.get('name').value).toBe(newTerm.value.name);
+    expect(component.createTermForm.get('description').value).toBe(newTerm.value.description);
+    expect(component.createTermForm.get('description').disabled).toBeTruthy();
+    expect(component.disableCreate).toBeTruthy();
+  });
+
+  // it('should handle createTerm success', fakeAsync(() => {
+  //   const createTermResponse = { result: { node_id: ['someId'] } };
+  //   spyOn(component['frameWorkService'], 'createTerm').and.returnValue(of(createTermResponse));
+  //   spyOn(component['frameWorkService'], 'getUuid').and.returnValue('some-uuid');
+  //   component.createTermForm.setValue({ name: 'Test Term', description: 'Description' });
+  //   component.disableCreate = false;
+  //   component.saveTerm();
+  //   tick();
+  //   expect(component.selectedTerm['identifier']).toEqual('someId');
+  //   expect(component['dialogRef'].close).toHaveBeenCalledWith({ term: component.selectedTerm, created: true });
+  //   expect(component.updateTerm).toHaveBeenCalled();
+  // }));
+  
+  
+  
+  
 });
