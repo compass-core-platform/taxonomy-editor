@@ -1,27 +1,48 @@
 # TaxonomyEditor
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.12.
+# Instalation and Usage guide.
 
-## Development server
+# Install latest version of sb-taxonomy-editor.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+npm i sb-taxonomy-editor
 
-## Code scaffolding
+# Add below element in sunbird-Ed-portal
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+<lib-taxonomy-view [environment]="environment" [taxonomyConfig]="taxonomyConfig">
 
-## Build
+# Save below "environment" and "taxonomyConfig" in local storage before initialize above library. (this need to change as input to a library).
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+         environment =  {
+                 frameworkName: string,   
+                 channelId: string,
+                 authToken: string,
+                 isApprovalRequired:  boolen  // set default to false,
+          }
 
-## Running unit tests
+         taxonomyConfig = {
+                    frameworkId: string,
+                    config: [
+                        {
+                            index:number,
+                            category:string,
+                            icon: 'string',
+                            color: 'string'
+                        }
+                    ]
+        }
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
+# Local setup and run app.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+# Install the node_modules
 
-## Further help
+    npm install
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+# Build and watch library.
+    ng build sb-taxonomy-edior --watch=true
+
+# Build app.
+    npm run start
+
+# Navigate to http://localhost:4200
+    
