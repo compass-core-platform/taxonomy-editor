@@ -1,16 +1,14 @@
 # TaxonomyEditor
 
-# Instalation and Usage guide.
-
-# Install latest version of sb-taxonomy-editor.
+## Install latest version of sb-taxonomy-editor.
 
 npm i sb-taxonomy-editor
 
-# Add below element in sunbird-Ed-portal
+## Add below element in sunbird-Ed-portal
 
 <lib-taxonomy-view [environment]="environment" [taxonomyConfig]="taxonomyConfig">
 
-# Save below "environment" and "taxonomyConfig" in local storage before initialize above library. (this need to change as input to a library).
+## Save below "environment" and "taxonomyConfig" in local storage before initialize above library. (this need to change as input to a library).
 
          environment =  {
                  frameworkName: string,   
@@ -34,15 +32,15 @@ npm i sb-taxonomy-editor
 
 # Local setup and run app.
 
-# Install the node_modules
+## Install the node_modules
 
     npm install
 
-# Build and watch library.
+## Build and watch library.
     ng build sb-taxonomy-edior --watch=true
 
-# Build app.
+## Build app.
     npm run start
 
-# Navigate to http://localhost:4200
+## Navigate to http://localhost:4200
     
