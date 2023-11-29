@@ -29,13 +29,18 @@ describe('FrameworkService', () => {
   });
 
   it('should get framework details', () => {
-   httpClientSpy.get.and.returnValue(of(serviceRes));
+//    httpClientSpy.get.and.returnValue(of(serviceRes));
     service.environment = {
       frameworkName: 'fracing_fw'
     };
+    service.rootConfig = rootConfig;
     service.getFrameworkInfo().subscribe(res => {
       expect(res.result.framework.code).toEqual('fracing_fw');
     });
+        const url =  `/api/framework/v1/read/fracing_fw`;
+        const req =  httpTestingController.expectOne(url);
+        expect(req.request.method).toEqual('GET');
+        req.flush(serviceRes);
   });
 
  

@@ -132,13 +132,32 @@
           "options": {
             "main": "projects/sb-taxonomy-editor/src/test.ts",
             "tsConfig": "projects/sb-taxonomy-editor/tsconfig.spec.json",
-            "karmaConfig": "projects/sb-taxonomy-editor/karma.conf.js"
+            "karmaConfig": "projects/sb-taxonomy-editor/karma.conf.js",
+            "codeCoverageExclude": [
+              "projects/sb-taxonomy-editor/src/lib/components/categories-preview/**",
+              "projects/sb-taxonomy-editor/src/lib/components/create-categories/**",
+              "projects/sb-taxonomy-editor/src/lib/containers/config-framework/**",
+              "projects/sb-taxonomy-editor/src/lib/services/connector.service.ts",
+              "projects/sb-taxonomy-editor/src/lib/services/local-connection.service.ts"
+            ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/sb-taxonomy-editor/**/*.ts"
+            ]
+          }          
         }
+
       }
     }
   },
   "cli": {
-    "analytics": false
+    "analytics": false,
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

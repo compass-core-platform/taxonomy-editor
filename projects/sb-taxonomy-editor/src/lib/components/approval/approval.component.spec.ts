@@ -3,11 +3,11 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ApprovalComponent } from './approval.component';
 import { HttpClientModule } from '@angular/common/http';
 
-xdescribe('ApprovalComponent', () => {
+describe('ApprovalComponent', () => {
   let component: ApprovalComponent;
   let fixture: ComponentFixture<ApprovalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach((() => {
     TestBed.configureTestingModule({
       declarations: [ ApprovalComponent ],
       imports: [HttpClientModule]

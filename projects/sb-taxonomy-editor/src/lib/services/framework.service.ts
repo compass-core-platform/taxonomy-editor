@@ -24,7 +24,7 @@ export class FrameworkService {
   environment
   libConfig: IConnection
   frameworkId: string;
-  rootConfig: any;
+  rootConfig: any;  
   constructor(
     private http: HttpClient,
     public localConfig: LocalConnectionService
@@ -35,7 +35,7 @@ export class FrameworkService {
   }
 
   getFrameworkInfo(): Observable<any> {
-    localStorage.removeItem('terms')
+    localStorage.removeItem('terms');
       return this.http.get(`/api/framework/v1/read/${this.environment.frameworkName}`).pipe(
         tap((response: any) => {
           this.resetAll()

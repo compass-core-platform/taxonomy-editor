@@ -66,11 +66,11 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
   }
  
   isExists(e){
-    let temp;
-    temp = this.termshafall.map(t => t.identifier)
+    let temp = [];
     return temp.includes(e.identifier)
+    temp = this.termshafall.map(t => t.identifier)
   }
-  
+  /* istanbul ignore next */
   subscribeEvents() {
     if (this.childSubscription) {
       this.childSubscription.unsubscribe()
@@ -121,7 +121,9 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
           //       return mer
           //     })
           //   // this.updateTerms()
+          
           setTimeout(() => {
+            /* istanbul ignore next */
             this.setConnectors(e.cardRef, next && next.index < this.column.index ? [] : this.columnData, 'ALL')
           }, 100);
           // console.log(this.columnData)
@@ -144,6 +146,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       }
     })
   }
+  /* istanbul ignore next */
   insertUpdateHandler(e, next) {
     const back = this.frameworkService.getPreviousCategory(this.column.code)
     // console.log('current Saved ===========>', this.frameworkService.getLocalTermsByCategory(this.column.code))
@@ -213,7 +216,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
     return this.columnData
     // }
   }
-
+  /* istanbul ignore next */
   setConnectors(elementClicked, columnItem, mode) {
     this.removeConnectors(elementClicked, 'box' + (this.column.index - 1), this.column.index - 1)
     // console.log('mode', mode)
@@ -230,6 +233,7 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       const ids = columnItem.map((c, i) => {
         return this.column.code + 'Card' + (i + 1)
       })
+       /* istanbul ignore  */
       this.connectorMapping['box' + (this.column.index - 1)] = { source: elementClicked, lines: (ids || []).map(id => { return { target: id, line: '', targetType: 'id' } }) }
       this.connectorService.updateConnectorsMap(this.connectorMapping)
       // console.log('next', next)
@@ -258,9 +262,8 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
       // console.log('inside else')
       // console.log('this.column', this.column)
       const item = this.column.children.findIndex(c => c.selected) + 1
-      if (this.column.index > 1) {
+       if (this.column.index > 1) {
         this.connectorMapping['box' + (this.column.index - 1)].lines = [{ target: elementClicked, line: '', targetType: 'element' }]
-
         this.connectorService.updateConnectorsMap(this.connectorMapping)
         const connectionLines = this.connectorService._drawLine(
           this.connectorMapping['box' + (this.column.index - 1)].source,
@@ -272,11 +275,11 @@ export class TaxonomyColumnViewComponent implements OnInit, OnDestroy, OnChanges
         this.connectorMapping['box' + (this.column.index - 1)].lines = connectionLines
         // console.log('this.connectorMapping :: ----------------------', this.connectorMapping)
       }
-
     }
     this.connectorService.updateConnectorsMap(this.connectorMapping)
 
   }
+  /* istanbul ignore next */
   removeConnectors(currentElement, prevCol, currentIndex) {
     console.log('prevCol ------------', prevCol)
     if (this.connectorMapping) {

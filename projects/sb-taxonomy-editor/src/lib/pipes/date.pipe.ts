@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class DatePipe implements PipeTransform {
 
   transform(value: any): any {
-    return new Date(value).toLocaleString().split(',')[0]
+    return new Date(value).toLocaleString().split('/')[0]
   }
 
 }

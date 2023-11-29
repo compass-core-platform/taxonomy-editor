@@ -76,7 +76,7 @@ export class TaxonomyViewComponent implements OnInit, OnDestroy {
   updateTaxonomyTerm(data: { selectedTerm: any, isSelected: boolean }) {
     
     this.updateFinalList(data)
-    this.updateSelection(data.selectedTerm.category, data.selectedTerm.code)
+    this.updateSelection(data.selectedTerm.category, data.selectedTerm.code);
 
     // if (this.heightLighted.length === 0) {
     //   this.heightLighted.push(data.selectedTerm);
@@ -103,7 +103,7 @@ export class TaxonomyViewComponent implements OnInit, OnDestroy {
   updateFinalList(data: { selectedTerm: any, isSelected: boolean, parentData?: any, colIndex?: any }) {
     if (data.isSelected) {
       // data.selectedTerm.selected = data.isSelected
-      this.frameworkService.selectionList.set(data.selectedTerm.category, data.selectedTerm)
+      this.frameworkService.selectionList.set(data.selectedTerm.category, data.selectedTerm);
       const next = this.frameworkService.getNextCategory(data.selectedTerm.category)
       if (next && next.code) {
         this.frameworkService.selectionList.delete(next.code)

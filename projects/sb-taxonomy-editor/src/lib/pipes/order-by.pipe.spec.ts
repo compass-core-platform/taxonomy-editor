@@ -20,9 +20,21 @@ describe('OrderByPipe', () => {
       appService = TestBed.inject(ApprovalService); 
     });
 
-  it('create an instance', () => {
+  it('should create an instance', () => {
     
     const pipe = new OrderByPipe(appService);
     expect(pipe).toBeTruthy();
+  });
+
+  
+  it('should reverse the order', () => {
+    const pipe = new OrderByPipe(appService);
+    expect(pipe.transform([1,4,6])).toEqual([6,4,1]);
+  });
+
+  
+  it('should return null', () => {
+    const pipe = new OrderByPipe(appService);
+    expect(pipe.transform(undefined)).toEqual(null);
   });
 });

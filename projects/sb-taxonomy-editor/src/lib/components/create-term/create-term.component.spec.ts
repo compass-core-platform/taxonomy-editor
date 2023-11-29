@@ -13,16 +13,32 @@ import { HarnessLoader } from '@angular/cdk/testing';
 import { of } from 'rxjs';
 import { FrameworkService } from '../../services/framework.service';
 import * as appConstants from '../../constants/app-constant';
+import { list } from '../taxonomy-view/taxonomy-view.component.stub'
+class MockFrameworkService {
+  createTerm(){
+    return of({});
+  }
+
+  publishFramework() {
+    return of({});
+  }
+  getUuid() {
+    return 'sdda1211';
+  }
+  updateTerm(){
+    return of({});
+  }
+}
 
 describe('CreateTermComponent', () => {
   let component: CreateTermComponent;
   let fixture: ComponentFixture<CreateTermComponent>;
-  let mockFrameworkService: jasmine.SpyObj<FrameworkService>;
+  // let mockFrameworkService: jasmine.SpyObj<FrameworkService>;
   let mockDialogRef: jasmine.SpyObj<MatDialogRef<CreateTermComponent>>;
-
-  beforeEach(async(() => {
+  let service : FrameworkService;
+   beforeEach(async(() => {
     mockDialogRef = jasmine.createSpyObj('MatDialogRef', ['close']);
-    mockFrameworkService = jasmine.createSpyObj('FrameworkService', ['updateTerm', 'publishFramework', 'getUuid', 'createTerm']);
+    // mockFrameworkService = jasmine.createSpyObj('FrameworkService', ['updateTerm', 'publishFramework', 'getUuid']);
     TestBed.configureTestingModule({
       declarations: [ CreateTermComponent ],
       imports: [
@@ -35,7 +51,7 @@ describe('CreateTermComponent', () => {
       providers:[
         {provide: MatDialogRef, useValue: {}},
         {provide: MAT_DIALOG_DATA, useValue: []},
-        { provide: FrameworkService, useValue: mockFrameworkService },
+        { provide: FrameworkService, useClass: MockFrameworkService },
         { provide: MatDialogRef, useValue: mockDialogRef },
       ]
     })
@@ -45,7 +61,7 @@ describe('CreateTermComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(CreateTermComponent);
     component = fixture.componentInstance;
-  
+    service = TestBed.inject(FrameworkService);
     component.data = {
       columnInfo: {
         children: []
@@ -202,12 +218,48 @@ describe('CreateTermComponent', () => {
   
   it('should close the dialog on dialogClose', () => {
     const mockTerm = { term: 'sampleTerm', created: true };
-    mockFrameworkService.publishFramework.and.returnValue(of({}));
+    const publishFrameworkSpy = spyOn(service, 'publishFramework').and.returnValue(of({}));
     component.dialogClose(mockTerm);
-    expect(mockFrameworkService.publishFramework).toHaveBeenCalled();
+    expect(publishFrameworkSpy).toHaveBeenCalled();
     expect(mockDialogRef.close).toHaveBeenCalledWith(mockTerm);
   });
   
   
-  
+  // it('should update form elements on select', () =>{
+  //   const term = {
+  //     value: {
+  //       name:'flooring measurements',
+  //       description:'flooring measurements'
+  //     }
+  //   };
+  //   component.onSelect(term);
+  //   expect(component.disableCreate).toBeTruthy();
+  // });
+
+  it('should show alert if the term already exist', ()=> {
+      component.termLists = [
+        {name:'flooring', description:''},
+        {name:'site', description:'site'}
+      ];
+      component.createTermForm.setValue({ name: 'flooring', description: 'Description' });
+      component.saveTerm();
+      expect(component.isTermExist).toBeTruthy();
+  });
+
+  it('should show alert if the term already exist', ()=> {
+    service.selectionList = list;
+    const frameWorkServiceSpy =  spyOn(service, 'createTerm').and.returnValue(of({
+      result:{
+        node_id:['1']
+      }}));
+    component.termLists = [
+      {name:'floor', description:''},
+      {name:'site', description:'site'}
+    ];
+    component.createTermForm.setValue({ name: 'flooring', description: 'Description' });
+    component.saveTerm();
+    expect(frameWorkServiceSpy).toHaveBeenCalled();
+});
+
+
 });

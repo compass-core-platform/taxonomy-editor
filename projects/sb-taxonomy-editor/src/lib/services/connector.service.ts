@@ -132,7 +132,7 @@ export class ConnectorService {
     // to reset connector map after clearing all the lines
     this.updateConnectorsMap({})
   }
-
+  
   // _drawHeaderLine(source, target, options = defaultConfig) {
   //   console.log(source,target,options);
   //   new LeaderLine(source, target, options);
