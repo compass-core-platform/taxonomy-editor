@@ -262,17 +262,19 @@ export class FrameworkService {
 
   setConfig(config: any) {
     this.rootConfig = config
+
   }
 
   getConfig(code: string) {
     // this.rootConfig = JSON.parse(localStorage.getItem('taxonomyConfig'))
     let categoryConfig: any;
+    const defaultConfig = this.rootConfig.filter(con => con.frameworkId === 'default')[0]
     this.rootConfig.forEach((config: any, index: number) => {
       if(this.frameworkId == config.frameworkId) {
         categoryConfig = config.config.find((obj: any) => obj.category == code);
       }
     });
-    return categoryConfig;
+    return categoryConfig || defaultConfig.config.find((obj: any) => obj.category == code);
   }
 
   isTermExistRemove(id) {

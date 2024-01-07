@@ -82,7 +82,6 @@ export class CreateTermComponent implements OnInit {
           code:this.frameWorkService.getUuid(),
           name:this.createTermForm.value.name,
           description:this.createTermForm.value.description,
-          category:this.data.columnInfo.code,
           status: appConstants.LIVE,
           approvalStatus:appConstants.DRAFT,
           parents:[
@@ -135,7 +134,8 @@ export class CreateTermComponent implements OnInit {
           // console.log('***************************',associations)
           // this.dialogClose({ term: this.selectedTerm, created: true })
           this.frameWorkService.updateTerm(this.data.frameworkId, parent.category, parent.code, reguestBody).subscribe((res: any) => {
-            if(counter === this.frameWorkService.selectionList.size ) {
+            counter--;
+            if(counter === 0 ) {
               // this.selectedTerm['associationProperties']['approvalStatus'] = 'Draft';
               this.dialogClose({ term: {...this.selectedTerm, ...{associationProperties:{approvalStatus:'Draft'}}}, created: true })
             }
