@@ -25,6 +25,7 @@ npm install sb-taxonomy-editor@latest
             }
         ]
     } 
+### defalut configuration is available. if you don't specify.
 
 ## Adding lib tag into template
  <lib-taxonomy-view [environment]="environment" [taxonomyConfig]="taxonomyConfig"></lib-taxonomy-view>
