@@ -15,6 +15,14 @@
             <!-- <mat-label>Enter {{data.name}} name</mat-label> -->
             <textarea matInput formControlName="description" placeholder="{{app_strings.description}}"></textarea>
         </mat-form-field>
+        <mat-form-field *ngIf="columnName=='Competencies'">
+            <!-- <mat-label>Enter {{data.area}} area</mat-label> -->
+            <input matInput formControlName="area" placeholder="{{app_strings.area}}">
+        </mat-form-field>
+        <mat-form-field *ngIf="columnName=='Competencies'">
+            <!-- <mat-label>Enter {{data.type}} type</mat-label> -->
+            <input matInput formControlName="type" placeholder="{{app_strings.type}}">
+        </mat-form-field>
          <footer class="actions">
             <button mat-raised-button color="default" type="reset" (click)="dialogClose('')">{{app_strings.cancel}}</button>
             <button mat-raised-button color="primary" type="submit" cdkFocusInitial *ngIf="!disableCreate">{{app_strings.create}}</button>
