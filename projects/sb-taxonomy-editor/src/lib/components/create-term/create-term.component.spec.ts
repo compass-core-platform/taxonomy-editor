@@ -90,13 +90,13 @@ describe('CreateTermComponent', () => {
   });
 
   it('should mark form as invalid on submit with empty fields', () => {
-    component.createTermForm.setValue({ name: '', description: '' });
+    component.createTermForm.setValue({ name: '', description: '', area: '', type: '' });
     expect(component.createTermForm.valid).toBeFalsy();
   });
 
   it('should call saveTerm method on form submission for create', () => {
     spyOn(component, 'saveTerm');
-    component.createTermForm.setValue({ name: 'Test Term', description: 'Description' });
+    component.createTermForm.setValue({ name: 'Test Term', description: 'Description', area: 'area', type: 'type' });
     component.disableCreate = false;
     fixture.detectChanges();
     fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
@@ -105,7 +105,7 @@ describe('CreateTermComponent', () => {
 
   it('should call updateTerm method on form submission for update', () => {
     spyOn(component, 'updateTerm');
-    component.createTermForm.setValue({ name: 'Updated Term', description: 'Updated Description' });
+    component.createTermForm.setValue({ name: 'Updated Term', description: 'Updated Description', area:'Updated Area', type: 'Updated Type' });
     component.disableCreate = true;
     fixture.detectChanges();
     fixture.debugElement.query(By.css('form')).triggerEventHandler('ngSubmit', null);
@@ -241,7 +241,7 @@ describe('CreateTermComponent', () => {
         {name:'flooring', description:''},
         {name:'site', description:'site'}
       ];
-      component.createTermForm.setValue({ name: 'flooring', description: 'Description' });
+      component.createTermForm.setValue({ name: 'flooring', description: 'Description', area: 'Functional', type: 'Visual Design' });
       component.saveTerm();
       expect(component.isTermExist).toBeTruthy();
   });
@@ -256,7 +256,7 @@ describe('CreateTermComponent', () => {
       {name:'floor', description:''},
       {name:'site', description:'site'}
     ];
-    component.createTermForm.setValue({ name: 'flooring', description: 'Description' });
+    component.createTermForm.setValue({ name: 'flooring', description: 'Description', area: 'Functional', type: 'Visual Design' });
     component.saveTerm();
     expect(frameWorkServiceSpy).toHaveBeenCalled();
 });
