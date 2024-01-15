@@ -25,6 +25,7 @@ export class CreateTermComponent implements OnInit {
   isTermExist: boolean = false;
   selectedTerm:Card = {};
   app_strings = labels;
+  columnName:any;
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -34,13 +35,16 @@ export class CreateTermComponent implements OnInit {
 
   ngOnInit() {
     this.termLists = this.data.columnInfo.children
+    this.columnName = this.data.columnInfo.name;
     this.initTermForm()
   }
 
   initTermForm() {
     this.createTermForm = this.fb.group({
       name: ['', [Validators.required]],
-      description: ['']
+      description: [''],
+      area: [''],
+      type: ['']
     })
     this.filtedTermLists = this.createTermForm.get('name').valueChanges.pipe(
       startWith(''),
@@ -53,6 +57,8 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
+    this.createTermForm.get('area').enable()
+    this.createTermForm.get('type').enable()
     // this.createTermForm.get('description').patchValue('')
     const filterValue = typeof(searchTxt)==='object'? this._normalizeValue(searchTxt.name):this._normalizeValue(searchTxt);
     isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
@@ -68,6 +74,10 @@ export class CreateTermComponent implements OnInit {
     this.createTermForm.get('name').patchValue(term.value.name)
     this.createTermForm.get('description').patchValue(term.value.description)
     this.createTermForm.get('description').disable()
+    this.createTermForm.get('area').patchValue(term.value.area)
+    this.createTermForm.get('area').disable()
+    this.createTermForm.get('type').patchValue(term.value.type)
+    this.createTermForm.get('type').disable()
     this.disableCreate = true
   }
 
@@ -87,7 +97,10 @@ export class CreateTermComponent implements OnInit {
           parents:[
             {identifier:`${this.data.columnInfo.identifier}`}
           ],
-          additionalProperties:{}
+          additionalProperties:{
+            competencyArea:this.createTermForm.value.area,
+            competencyType: this.createTermForm.value.type
+          }
         }
         const requestBody =  {
           request: {
