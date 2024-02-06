@@ -26,7 +26,7 @@ export class CreateTermComponent implements OnInit {
   selectedTerm:Card = {};
   app_strings = labels;
   columnName:any;
-  isAreaAndTypeRequired: boolean;
+  category4AdditionalProp: boolean;
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,7 +38,7 @@ export class CreateTermComponent implements OnInit {
     this.termLists = this.data.columnInfo.children
     this.columnName = this.data.columnInfo.name;
     this.initTermForm()
-    this.isAreaAndTypeRequired = this.frameWorkService.getEnviroment().additionalPropertiesInCategory4;
+    this.category4AdditionalProp = this.frameWorkService.getEnviroment().additionalProperties.taxonomyCategory4;
   }
 
   initTermForm() {
@@ -59,7 +59,7 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
-    if(this.isAreaAndTypeRequired){
+    if(this.category4AdditionalProp){
       this.createTermForm.get('area').enable()
       this.createTermForm.get('type').enable()
     }
