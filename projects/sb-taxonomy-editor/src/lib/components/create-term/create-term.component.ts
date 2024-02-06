@@ -26,7 +26,7 @@ export class CreateTermComponent implements OnInit {
   selectedTerm:Card = {};
   app_strings = labels;
   columnName:any;
-  isAreaAndTypeRequired: boolean;
+  additionalProps: any;
    constructor(
     public dialogRef: MatDialogRef<CreateTermComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -38,7 +38,7 @@ export class CreateTermComponent implements OnInit {
     this.termLists = this.data.columnInfo.children
     this.columnName = this.data.columnInfo.name;
     this.initTermForm()
-    this.isAreaAndTypeRequired = this.frameWorkService.getEnviroment().additionalPropertiesInCategory4;
+    this.additionalProps = this.frameWorkService.getEnviroment().additionalProperties;
   }
 
   initTermForm() {
@@ -59,7 +59,7 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
-    if(this.isAreaAndTypeRequired){
+    if(this.additionalProps?.includes(this.data?.columnInfo?.code)){
       this.createTermForm.get('area').enable()
       this.createTermForm.get('type').enable()
     }
@@ -78,7 +78,7 @@ export class CreateTermComponent implements OnInit {
     this.createTermForm.get('name').patchValue(term.value.name)
     this.createTermForm.get('description').patchValue(term.value.description)
     this.createTermForm.get('description').disable()
-    if(term.value.category == "taxonomyCategory4"){
+    if(term.value.category == this.data?.columnInfo?.code){
       this.createTermForm.get('area').patchValue(term.value.moreProperties?.competencyArea)
       this.createTermForm.get('area').disable()
       this.createTermForm.get('type').patchValue(term.value.moreProperties?.competencyType)
@@ -131,7 +131,6 @@ export class CreateTermComponent implements OnInit {
     let counter = 0
     let localIsExist = false
     this.frameWorkService.selectionList.forEach((parent, i) => {
-      counter++
       temp = parent.children ? parent.children.filter(child => child.identifier === this.selectedTerm.identifier) : null
       associations = parent.children ? parent.children.map(c => {
         return { identifier: c.identifier} // approvalStatus: c.associationProperties?c.associationProperties.approvalStatus: 'Draft'
@@ -140,6 +139,7 @@ export class CreateTermComponent implements OnInit {
         this.isTermExist = true
         return
         } else { 
+          counter++
           associations.push({ identifier: this.selectedTerm.identifier}) // approvalStatus: appConstants.DRAFT 
           this.isTermExist = false
           const reguestBody = {
