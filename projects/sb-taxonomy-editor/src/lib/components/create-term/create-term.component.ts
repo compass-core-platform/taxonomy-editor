@@ -79,9 +79,9 @@ export class CreateTermComponent implements OnInit {
     this.createTermForm.get('description').patchValue(term.value.description)
     this.createTermForm.get('description').disable()
     if(term.value.category == "taxonomyCategory4"){
-      this.createTermForm.get('area').patchValue(term.value.moreProperties.competencyArea)
+      this.createTermForm.get('area').patchValue(term.value.moreProperties?.competencyArea)
       this.createTermForm.get('area').disable()
-      this.createTermForm.get('type').patchValue(term.value.moreProperties.competencyType)
+      this.createTermForm.get('type').patchValue(term.value.moreProperties?.competencyType)
       this.createTermForm.get('type').disable()
     }
     
