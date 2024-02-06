@@ -59,8 +59,10 @@ export class CreateTermComponent implements OnInit {
     this.disableCreate = false
     this.isTermExist = false
     this.createTermForm.get('description').enable()
-    this.createTermForm.get('area').enable()
-    this.createTermForm.get('type').enable()
+    if(this.isAreaAndTypeRequired){
+      this.createTermForm.get('area').enable()
+      this.createTermForm.get('type').enable()
+    }
     // this.createTermForm.get('description').patchValue('')
     const filterValue = typeof(searchTxt)==='object'? this._normalizeValue(searchTxt.name):this._normalizeValue(searchTxt);
     isExist = this.termLists.filter(term => this._normalizeValue(term.name).includes(filterValue));
@@ -76,10 +78,13 @@ export class CreateTermComponent implements OnInit {
     this.createTermForm.get('name').patchValue(term.value.name)
     this.createTermForm.get('description').patchValue(term.value.description)
     this.createTermForm.get('description').disable()
-    this.createTermForm.get('area').patchValue(term.value.moreProperties.competencyArea)
-    this.createTermForm.get('area').disable()
-    this.createTermForm.get('type').patchValue(term.value.moreProperties.competencyType)
-    this.createTermForm.get('type').disable()
+    if(term.value.category == "taxonomyCategory4"){
+      this.createTermForm.get('area').patchValue(term.value.moreProperties.competencyArea)
+      this.createTermForm.get('area').disable()
+      this.createTermForm.get('type').patchValue(term.value.moreProperties.competencyType)
+      this.createTermForm.get('type').disable()
+    }
+    
     this.disableCreate = true
   }
 
@@ -99,7 +104,7 @@ export class CreateTermComponent implements OnInit {
           parents:[
             {identifier:`${this.data.columnInfo.identifier}`}
           ],
-          additionalProperties:{
+          moreProperties:{
             competencyArea:this.createTermForm.value.area,
             competencyType: this.createTermForm.value.type
           }
