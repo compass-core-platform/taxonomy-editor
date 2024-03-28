@@ -55,27 +55,25 @@ export class ConnectorService {
     }
   }
 
-  renderLine(source, target, options: LLOptions) {
-    const defaultOptions = {
+  private renderLine(source, target, options: LLOptions) {
+    let _options = {
       animOptions: { duration: 2000, timing: 'linear' },
       hide: true,
-      endPlugOutline: true,
-      startPlugOutline: true
+      // startSocketGravity: 50,
+      // endSocketGravity: [-30, 50]
     };
-
-    const mergedOptions = { ...defaultOptions, ...options };
     let _line
     if(target.targetType === 'id'){
-      _line = new LeaderLine(source, document.getElementById(target.target), mergedOptions);
+      _line = new LeaderLine(source, document.getElementById(target.target), _options);
     }
     else {
-      _line = new LeaderLine(source, target.target, mergedOptions);
+      _line = new LeaderLine(source, target.target, _options);
     }
 
     _line.endPlugOutline = true;
     _line.startPlugOutline = true;
-    // _line.setOptions(options);
-    // _line.show('draw');
+    _line.setOptions(options);
+    _line.show('draw');
     return _line;
   }
 

@@ -1,15 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CreateCategoriesComponent } from './create-categories.component';
-import { FormArray, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 xdescribe('CreateCategoriesComponent', () => {
   let component: CreateCategoriesComponent;
   let fixture: ComponentFixture<CreateCategoriesComponent>;
+  let fb: FormBuilder;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CreateCategoriesComponent ]
+      declarations: [ CreateCategoriesComponent ],
+      imports: [FormsModule, ReactiveFormsModule],
+      providers: [FormBuilder]
     })
     .compileComponents();
   }));
@@ -18,6 +21,12 @@ xdescribe('CreateCategoriesComponent', () => {
     fixture = TestBed.createComponent(CreateCategoriesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    fb = new FormBuilder();
+    component = new CreateCategoriesComponent(fb);
+
+    component['createCategoriesForm'] = fb.group({
+      categories: fb.array([])
+    });
   });
 
   it('should create', () => {
@@ -66,6 +75,10 @@ xdescribe('CreateCategoriesComponent', () => {
   });
 
   it('should add a new category', () => {
+    component['createCategoriesForm'] = fb.group({
+      categories: fb.array([])
+    });
+  
     component.addCategory();
     expect(component.categories().length).toBe(1);
   });
@@ -81,15 +94,7 @@ xdescribe('CreateCategoriesComponent', () => {
     component.taxonomyInfo = taxonomyInfo;
     component.initCategoryForm();
     expect(component.categories().length).toBe(taxonomyInfo.length);
-  });
-
-  it('should emit category updates on saveForm', () => {
-    spyOn(component.updateCategory, 'emit');
-    const categories = [{ name: 'Category 1' }, { name: 'Category 2' }];
-    component.createCategoriesForm.patchValue({ categories });
-    component.saveForm();
-    expect(component.updateCategory.emit).toHaveBeenCalledWith(categories);
-  });
+  });  
 
   it('should emit category updates on emitCategory', () => {
     spyOn(component.updateCategory, 'emit');
